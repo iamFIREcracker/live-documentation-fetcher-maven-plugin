@@ -23,3 +23,9 @@ from writing live documentation with non-collaborative tools such as
 LibreOffice, to doing it the right way with 2014 tools!  After the switch you
 won't need to check-in the live documentation anymore, that will indeed be
 automatically downloaded at the time your tests are run.
+
+## Credits
+
+Special thanks to [fredpointzero](https://github.com/fredpointzero) for having
+created, and shared
+[google-drive-maven-plugin](https://github.com/fredpointzero/google-drive-maven-plugin).
