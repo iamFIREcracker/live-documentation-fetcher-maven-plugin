@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.matteolandi</groupId>
+    <artifactId>live-documentation-fetcher-maven-plutin-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/main/resources/auth.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.matteolandi</groupId>
+                <artifactId>live-documentation-fetcher-maven-plugin</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <configuration>
+                    <googleDriveAuth>
+                        <!-- Values are read from the imported the file auth.properties -->
+                        <storageAccountEmail>${storageAccountEmail}</storageAccountEmail>
+                        <storagePrivateKeyPath>${storagePrivateKeyPath}</storagePrivateKeyPath>
+                        <clientId>${clientId}</clientId>
+                        <clientSecret>${clientSecret}</clientSecret>
+                        <authCode>${authCode}</authCode>
+                    </googleDriveAuth>
+                    <outputDirectory>target/</outputDirectory>
+                    <documents>
+                        <document>
+                            <title>Ideas</title>
+                        </document>
+                        <document>
+                            <title>Questionario cinema</title>
+                            <outputDirectory>target/foo</outputDirectory>
+                        </document>
+                        <document>
+                            <title>Live Documentation</title>
+                        </document>
+                    </documents>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!--<goal>reset</goal>-->
+                            <goal>fetch</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
