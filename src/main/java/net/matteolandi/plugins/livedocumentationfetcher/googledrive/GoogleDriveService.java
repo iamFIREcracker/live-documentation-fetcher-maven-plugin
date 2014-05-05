@@ -44,6 +44,8 @@ public class GoogleDriveService {
                 .setCredentialStore(credentialStore).build();
 
         if (authCode == null) {
+            credentialStore.delete(CLIENT_ID, null);
+
             final String url = flow.newAuthorizationUrl().setRedirectUri(REDIRECT_URI).build();
             throw new MissingAuthorizationCodeException(url);
         }
@@ -61,10 +63,6 @@ public class GoogleDriveService {
 
         return new Drive.Builder(httpTransport, jsonFactory, credential)
                 .setApplicationName("DriveService").build();
-    }
-
-    public void reset() throws IOException {
-        credentialStore.delete(CLIENT_ID, null);
     }
 
     public File retrieveFileByTitle(final String title) throws IOException {
