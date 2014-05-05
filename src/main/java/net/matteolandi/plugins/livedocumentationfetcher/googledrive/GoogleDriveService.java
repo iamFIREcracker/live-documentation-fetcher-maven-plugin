@@ -35,7 +35,8 @@ public class GoogleDriveService {
 
     private Drive getService(final HttpTransport httpTransport, final JsonFactory jsonFactory,
                              final CredentialStore credentialStore,
-                             final String clientId, final String clientSecret, final String authCode) throws Exception {
+                             final String clientId, final String clientSecret, final String authCode)
+            throws Exception {
         final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, jsonFactory, clientId, clientSecret, Arrays.asList(DriveScopes.DRIVE))
                 .setAccessType("offline")
@@ -44,7 +45,7 @@ public class GoogleDriveService {
 
         if (authCode == null) {
             final String url = flow.newAuthorizationUrl().setRedirectUri(REDIRECT_URI).build();
-            throw new Exception("Missing authorization code, get one at " + url);
+            throw new MissingAuthorizationCodeException(url);
         }
 
         Credential credential = new GoogleCredential.Builder()
@@ -72,6 +73,14 @@ public class GoogleDriveService {
 
     public InputStream fetchFileByDownloadUrl(final String downloadUrl) throws IOException {
         return googleDriveUtils.fetchFileByDownloadUrl(service, downloadUrl);
+    }
+
+    public static final class MissingAuthorizationCodeException extends Exception {
+        public final String url;
+
+        public MissingAuthorizationCodeException(final String url) {
+            this.url = url;
+        }
     }
 }
 

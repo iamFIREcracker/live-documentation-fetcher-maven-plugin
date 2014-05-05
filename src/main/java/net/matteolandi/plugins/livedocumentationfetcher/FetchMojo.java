@@ -50,6 +50,8 @@ public class FetchMojo extends AbstractMojo {
                             httpTransport, jsonFactory, credentialStore, googleDriveUtils,
                             googleDriveAuth.clientId, googleDriveAuth.clientSecret, googleDriveAuth.authCode);
             execute(googleDriveService);
+        } catch (GoogleDriveService.MissingAuthorizationCodeException e) {
+            log.error("Missing authorization code, get one at " + e.url);
         } catch (Exception e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
