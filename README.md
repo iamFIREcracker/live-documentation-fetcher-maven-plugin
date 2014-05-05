@@ -91,6 +91,17 @@ Where:
 By default, all the fetched documents will be placed inside
 `${project.build.directory}`.
 
+### Get the authorization token
+
+The first time the plugin is executed, it will fail with the following error:
+
+    [ERROR] Missing authorization code, get one at https://accounts.google.com/o/oauth2/auth?access_type...
+
+Open that url in a browser and authorize the application;  after that you will
+be redirected to a page containing the authorization code:  dump it in the pom
+(`authCode` property).
+
+To reset the authorization code, simply *remove* that property from the pom.
 
 ## Background
 
