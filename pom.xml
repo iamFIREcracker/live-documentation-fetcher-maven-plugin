@@ -85,7 +85,6 @@
 						</goals>
 					</execution>
 				</executions>
-
             </plugin>
             <plugin>
                 <artifactId>maven-invoker-plugin</artifactId>
