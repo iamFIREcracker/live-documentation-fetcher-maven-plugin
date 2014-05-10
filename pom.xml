@@ -11,26 +11,24 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <url>https://github.com/iamFIREcracker/live-documentation-fetcher-maven-plugin</url>
+
     <scm>
         <connection>scm:git:git@github.com:iamFIREcracker/live-documentation-fetcher-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:iamFIREcracker/live-documentation-fetcher-maven-plugin.git</developerConnection>
         <url>https://github.com/iamFIREcracker/live-documentation-fetcher-maven-plugin</url>
     </scm>
+
     <properties>
         <github.global.server>github</github.global.server>
     </properties>
-    <developers>
-        <developer>
-            <name>Matteo Landi</name>
-            <email>matteo@matteolandi.net</email>
-        </developer>
-    </developers>
+
     <repositories>
         <repository>
             <id>googleapis</id>
             <url>http://mavenrepo.google-api-java-client.googlecode.com/hg/</url>
         </repository>
     </repositories>
+
     <distributionManagement>
         <repository>
             <id>internal.repo</id>
@@ -38,6 +36,7 @@
             <url>file://${project.build.directory}/mvn-repo</url>
         </repository>
     </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -70,6 +69,7 @@
             <version>1.9.13</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -151,4 +151,10 @@
             </plugin>
         </plugins>
     </build>
+    <developers>
+        <developer>
+            <name>Matteo Landi</name>
+            <email>matteo@matteolandi.net</email>
+        </developer>
+    </developers>
 </project>
