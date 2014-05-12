@@ -8,7 +8,7 @@
     </parent>
     <groupId>net.matteolandi</groupId>
     <artifactId>live-documentation-fetcher-maven-plugin</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>maven-plugin</packaging>
     <url>https://github.com/iamFIREcracker/live-documentation-fetcher-maven-plugin</url>
 
