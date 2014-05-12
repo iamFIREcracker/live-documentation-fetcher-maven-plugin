@@ -28,7 +28,7 @@
             <plugin>
                 <groupId>net.matteolandi</groupId>
                 <artifactId>live-documentation-fetcher-maven-plugin</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.0.1</version>
                 <configuration>
                     <googleDriveAuth>
                         <!-- Values are read from the imported the file auth.properties -->
