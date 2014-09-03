@@ -132,7 +132,7 @@ If the link for creating the authorization code gives you an error like the foll
     no application name
     Request Details
 
-Don't forget to properly configure you Google app by specifying your email id into the "Consent Screen" page.  For additional details, please have a look [here](http://stackoverflow.com/a/18951654)
+Don't forget to properly configure you Google app by specifying your email id into the "Consent Screen" page.  For additional details, please have a look [here](http://stackoverflow.com/a/18951654).
 
 
 ## Credits
