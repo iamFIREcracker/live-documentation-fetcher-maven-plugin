@@ -32,6 +32,9 @@ public class FetchMojo extends AbstractMojo {
     private static final String MIME_TYPE = "text/html";
     private static final String EXTENSION = ".html";
 
+    @Parameter(defaultValue = "0")
+    public int maxConcurrentRequests;
+
     @Parameter(required = true)
     public GoogleDriveAuthSettings googleDriveAuth;
 
@@ -47,6 +50,9 @@ public class FetchMojo extends AbstractMojo {
         final NetHttpTransport httpTransport = new NetHttpTransport();
         final JacksonFactory jsonFactory = new JacksonFactory();
         final GoogleDriveUtils googleDriveUtils = new GoogleDriveUtils();
+        final ExecutorService executorService
+                = Executors.newFixedThreadPool(
+                        maxConcurrentRequests > 0 ? maxConcurrentRequests : Runtime.getRuntime().availableProcessors());
 
         try {
             final GoogleDriveBasedCredentialStore credentialStore =
@@ -57,7 +63,7 @@ public class FetchMojo extends AbstractMojo {
                     new GoogleDriveService(
                             httpTransport, jsonFactory, credentialStore, googleDriveUtils,
                             googleDriveAuth.clientId, googleDriveAuth.clientSecret, googleDriveAuth.authCode);
-            execute(googleDriveService, Executors.newCachedThreadPool());
+            execute(googleDriveService, executorService);
         } catch (GoogleDriveService.MissingAuthorizationCodeException e) {
             final String message = "Missing authorization code, get one at " + e.url;
             log.error(message);
