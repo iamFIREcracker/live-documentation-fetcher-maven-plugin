@@ -44,6 +44,7 @@ Add the following to your build configuration:
                     <artifactId>live-documentation-fetcher-maven-plugin</artifactId>
                     <version>0.0.1-SNAPSHOT</version>
                     <configuration>
+                        <maxConcurrentRequests>4</maxConcurrentRequests>
                         <googleDriveAuth>
                             <storageAccountEmail>${storageAccountEmail}</storageAccountEmail>
                             <storagePrivateKeyPath>${storagePrivateKeyPath}</storagePrivateKeyPath>
@@ -90,6 +91,13 @@ Where:
 
 By default, all the fetched documents will be placed inside
 `${project.build.directory}`.
+
+### Concurrent requests
+
+To speed things up, the plugin tries to fetch the documents in parallel.  By default
+it makes as many concurrent requests as the number of available processors, but you
+can always change this behavior altering the plugin `maxConcurrentRequests`
+configuration setting.
 
 ### Get the authorization token
 
