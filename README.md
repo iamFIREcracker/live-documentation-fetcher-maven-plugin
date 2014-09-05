@@ -42,7 +42,7 @@ Add the following to your build configuration:
                 <plugin>
                     <groupId>net.matteolandi</groupId>
                     <artifactId>live-documentation-fetcher-maven-plugin</artifactId>
-                    <version>0.0.1-SNAPSHOT</version>
+                    <version>0.0.2</version>
                     <configuration>
                         <maxConcurrentRequests>4</maxConcurrentRequests>
                         <googleDriveAuth>
