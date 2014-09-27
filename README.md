@@ -143,11 +143,11 @@ created, and shared
 
 ## Changelog
 
-- 0.0.3: Automatic retry in case of network errors
+- *0.0.3*: Automatic retry in case of network errors
 
   * Removed configuration setting: `maxConcurrentRequests`
 
-- 0.0.2: Parallel download of requested documents
+- *0.0.2*: Parallel download of requested documents
 
   * New configuration setting: `maxConcurrentRequests`
 
@@ -157,4 +157,4 @@ created, and shared
     configuration setting.
 
 
-- 0.0.1: Project inception
+- *0.0.1*: Project inception
