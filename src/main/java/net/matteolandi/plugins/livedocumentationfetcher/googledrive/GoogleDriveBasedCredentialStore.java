@@ -1,10 +1,5 @@
 package net.matteolandi.plugins.livedocumentationfetcher.googledrive;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.GeneralSecurityException;
-import java.util.Arrays;
-
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.CredentialStore;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -15,6 +10,13 @@ import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.jackson.map.ObjectMapper;
+import rx.Observable;
+import rx.Subscriber;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.util.Arrays;
 
 public class GoogleDriveBasedCredentialStore implements CredentialStore {
     private static final String MIME_TYPE = "application/json";
@@ -24,9 +26,10 @@ public class GoogleDriveBasedCredentialStore implements CredentialStore {
     private final GoogleDriveUtils googleDriveUtils;
     private final Drive service;
 
-    public GoogleDriveBasedCredentialStore(final Log log, final HttpTransport httpTransport, final JsonFactory jsonFactory,
-                                           final GoogleDriveUtils googleDriveUtils,
-                                           final String serviceAccountEmail, final java.io.File serviceAccountPrivateKeyPath)
+    private GoogleDriveBasedCredentialStore(final Log log, final HttpTransport httpTransport,
+                                            final JsonFactory jsonFactory, final GoogleDriveUtils googleDriveUtils,
+                                            final String serviceAccountEmail,
+                                            final java.io.File serviceAccountPrivateKeyPath)
             throws GeneralSecurityException, IOException {
         this.log = log;
         this.googleDriveUtils = googleDriveUtils;
@@ -41,6 +44,29 @@ public class GoogleDriveBasedCredentialStore implements CredentialStore {
         this.service = new Drive.Builder(httpTransport, jsonFactory, null)
                 .setApplicationName("DriveBasedCredentialStore")
                 .setHttpRequestInitializer(credential).build();
+    }
+
+
+    public static Observable<GoogleDriveBasedCredentialStore>
+    observe(final Log log, final HttpTransport httpTransport, final JsonFactory jsonFactory,
+            final GoogleDriveUtils googleDriveUtils, final String serviceAccountEmail,
+            final java.io.File serviceAccountPrivateKeyPath) {
+        return Observable.create(new Observable.OnSubscribe<GoogleDriveBasedCredentialStore>() {
+            @Override
+            public void call(Subscriber<? super GoogleDriveBasedCredentialStore> s) {
+                try {
+                    s.onNext(new GoogleDriveBasedCredentialStore(log, httpTransport, jsonFactory, googleDriveUtils,
+                            serviceAccountEmail, serviceAccountPrivateKeyPath));
+                    s.onCompleted();
+                } catch (GeneralSecurityException e) {
+                    log.warn(String.format("Cannot create Google Drive credential store: %s", e.getMessage()), e);
+                    s.onError(e);
+                } catch (IOException e) {
+                    log.warn(String.format("Cannot create Google Drive credential store: %s", e.getMessage()), e);
+                    s.onError(e);
+                }
+            }
+        });
     }
 
     @Override

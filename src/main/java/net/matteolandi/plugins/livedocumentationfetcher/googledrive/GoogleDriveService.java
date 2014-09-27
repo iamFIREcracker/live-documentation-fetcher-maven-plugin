@@ -1,9 +1,5 @@
 package net.matteolandi.plugins.livedocumentationfetcher.googledrive;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.CredentialStore;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -14,6 +10,13 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
+import org.apache.maven.plugin.logging.Log;
+import rx.Observable;
+import rx.Subscriber;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 
 public class GoogleDriveService {
 
@@ -24,19 +27,42 @@ public class GoogleDriveService {
     private final GoogleDriveUtils googleDriveUtils;
     private final Drive service;
 
-    public GoogleDriveService(final HttpTransport httpTransport, final JsonFactory jsonFactory,
-                              final CredentialStore credentialStore, final GoogleDriveUtils googleDriveUtils,
-                              final String clientId, final String clientSecret, final String authCode)
-            throws Exception {
+    private GoogleDriveService(final HttpTransport httpTransport, final JsonFactory jsonFactory,
+                               final CredentialStore credentialStore, final GoogleDriveUtils googleDriveUtils,
+                               final String clientId, final String clientSecret, final String authCode)
+            throws IOException, MissingAuthorizationCodeException {
         this.credentialStore = credentialStore;
         this.googleDriveUtils = googleDriveUtils;
         this.service = getService(httpTransport, jsonFactory, credentialStore, clientId, clientSecret, authCode);
     }
 
+    public static Observable<GoogleDriveService>
+    observe(final Log log, final HttpTransport httpTransport, final JsonFactory jsonFactory,
+            final CredentialStore credentialStore, final GoogleDriveUtils googleDriveUtils,
+            final String clientId, final String clientSecret, final String authCode) {
+        return Observable.create(new Observable.OnSubscribe<GoogleDriveService>() {
+            @Override
+            public void call(Subscriber<? super GoogleDriveService> s) {
+                try {
+                    s.onNext(
+                            new GoogleDriveService(httpTransport, jsonFactory, credentialStore, googleDriveUtils,
+                                    clientId, clientSecret, authCode));
+                    s.onCompleted();
+                } catch (IOException e) {
+                    log.warn(String.format("Cannot create Google Drive credential store: %s", e.getMessage()), e);
+                    s.onError(e);
+                } catch (MissingAuthorizationCodeException e) {
+                    log.warn(String.format("Cannot create Google Drive credential store: %s", e.getMessage()), e);
+                    s.onError(e);
+                }
+            }
+        });
+    }
+
     private Drive getService(final HttpTransport httpTransport, final JsonFactory jsonFactory,
                              final CredentialStore credentialStore,
                              final String clientId, final String clientSecret, final String authCode)
-            throws Exception {
+            throws IOException, MissingAuthorizationCodeException {
         final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, jsonFactory, clientId, clientSecret, Arrays.asList(DriveScopes.DRIVE))
                 .setAccessType("offline")
