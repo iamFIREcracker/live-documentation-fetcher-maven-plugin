@@ -140,3 +140,21 @@ Don't forget to properly configure you Google app by specifying your email id in
 Special thanks to [fredpointzero](https://github.com/fredpointzero) for having
 created, and shared
 [google-drive-maven-plugin](https://github.com/fredpointzero/google-drive-maven-plugin).
+
+## Changelog
+
+- 0.0.3: Automatic retry in case of network errors
+
+  * Removed configuration setting: `maxConcurrentRequests`
+
+- 0.0.2: Parallel download of requested documents
+
+  * New configuration setting: `maxConcurrentRequests`
+
+    To speed things up, the plugin now tries to fetch the documents in parallel.  By default
+    it makes as many concurrent requests as the number of available processors, but you
+    can always change this behavior altering the plugin `maxConcurrentRequests`
+    configuration setting.
+
+
+- 0.0.1: Project inception
