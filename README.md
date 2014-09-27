@@ -143,18 +143,25 @@ created, and shared
 
 ## Changelog
 
-- **0.0.3**: Automatic retry in case of network errors
+- **0.0.3**:
 
-  * Removed configuration setting: `maxConcurrentRequests`
+  * Automatic retry in case of network errors
 
-- **0.0.2**: Parallel download of requested documents
+    Since the plugin is now able to recover from network errors and timeouts, it will just try
+    to fetch as much resources as it can (`maxConcurrentRequests` is not used anymore);  in case
+    of failures, the plugin waits for a random amount of time in between 0 and 1000 ms
+    before retrying the request (note that the execution of the plugin is aborted after 5
+    failures due to the same document).
 
-  * New configuration setting: `maxConcurrentRequests`
+- **0.0.2**:
+
+  * Parallel download of requested documents
 
     To speed things up, the plugin now tries to fetch the documents in parallel.  By default
     it makes as many concurrent requests as the number of available processors, but you
     can always change this behavior altering the plugin `maxConcurrentRequests`
     configuration setting.
 
+- **0.0.1**:
 
-- **0.0.1**: Project inception
+  * Project inception
