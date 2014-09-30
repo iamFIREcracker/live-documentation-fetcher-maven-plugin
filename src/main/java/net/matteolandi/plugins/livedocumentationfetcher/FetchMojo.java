@@ -127,7 +127,7 @@ public class FetchMojo extends AbstractMojo {
         return Async.fromCallable(new Callable<String>() {
             @Override
             public String call() throws Exception {
-                log.debug(String.format("Looking-up document with title: '%s'", document.title));
+                log.info(String.format("Looking-up document with title: '%s'", document.title));
 
                 final File file = googleDriveService.retrieveFileByTitle(document.title);
                 if (file == null) {
