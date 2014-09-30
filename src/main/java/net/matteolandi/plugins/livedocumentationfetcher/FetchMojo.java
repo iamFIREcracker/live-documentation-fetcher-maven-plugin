@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 @Mojo(name = "fetch", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class FetchMojo extends AbstractMojo {
     private static final int MAX_RETRIES = 5;
-    private static final int MAX_RETRY_DELAY_MILLIS = 1000;
+    private static final int MAX_RETRY_DELAY_MILLIS = 5000;
     private static final String MIME_TYPE = "text/html";
     private static final String EXTENSION = ".html";
 
