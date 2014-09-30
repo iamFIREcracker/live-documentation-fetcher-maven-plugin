@@ -61,7 +61,12 @@ public class FetchMojo extends AbstractMojo {
         final Observable<String> createdFilesObservable =
                 getCreatedFilesObservable(log, driveServiceObservable, documents);
 
-        createdFilesObservable.toBlocking().forEach(new Action1<String>() {
+        createdFilesObservable.doOnError(new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                log.error(throwable);
+            }
+        }).toBlocking().forEach(new Action1<String>() {
             @Override
             public void call(String s) {
                 log.info(String.format("Created: '%s'", s));
