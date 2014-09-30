@@ -82,7 +82,7 @@ public class FetchMojo extends AbstractMojo {
                 log, httpTransport, jsonFactory, googleDriveUtils,
                 googleDriveAuth.storageAccountEmail, googleDriveAuth.storagePrivateKeyPath)
                 .subscribeOn(Schedulers.io())
-                .retryWhen(new RetryWithDelayWhenDifferentThanIOException(MAX_RETRIES, MAX_RETRY_DELAY_MILLIS));
+                .retryWhen(new RetryWithDelayWhenNetworkException(MAX_RETRIES, MAX_RETRY_DELAY_MILLIS));
     }
 
     private Observable<GoogleDriveService>
@@ -96,7 +96,7 @@ public class FetchMojo extends AbstractMojo {
                         log, httpTransport, jsonFactory, credentialStore, googleDriveUtils,
                         googleDriveAuth.clientId, googleDriveAuth.clientSecret, googleDriveAuth.authCode)
                         .subscribeOn(Schedulers.io())
-                        .retryWhen(new RetryWithDelayWhenDifferentThanIOException(MAX_RETRIES, MAX_RETRY_DELAY_MILLIS));
+                        .retryWhen(new RetryWithDelayWhenNetworkException(MAX_RETRIES, MAX_RETRY_DELAY_MILLIS));
             }
         });
     }
@@ -112,7 +112,7 @@ public class FetchMojo extends AbstractMojo {
                 for (final Document document : documents) {
                     final Observable<String> createdFileObservable =
                             downloadFile(log, googleDriveService, document)
-                                    .retryWhen(new RetryWithDelayWhenDifferentThanIOException(
+                                    .retryWhen(new RetryWithDelayWhenNetworkException(
                                             MAX_RETRIES, MAX_RETRY_DELAY_MILLIS));
 
                     accumulator.add(createdFileObservable);
@@ -207,13 +207,13 @@ public class FetchMojo extends AbstractMojo {
     /**
      * Adapted from this SO answer:  http://stackoverflow.com/a/25292833
      */
-    public static class RetryWithDelayWhenDifferentThanIOException
+    public static class RetryWithDelayWhenNetworkException
             implements Func1<Observable<? extends Notification<?>>, Observable<?>> {
         private final int maxRetries;
         private final int maxRetryDelayMillis;
         private int retryCount;
 
-        public RetryWithDelayWhenDifferentThanIOException(final int maxRetries, final int maxRetryDelayMillis) {
+        public RetryWithDelayWhenNetworkException(final int maxRetries, final int maxRetryDelayMillis) {
             this.maxRetries = maxRetries;
             this.maxRetryDelayMillis = maxRetryDelayMillis;
             this.retryCount = 0;
