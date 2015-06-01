@@ -52,7 +52,7 @@ public class GoogleDriveService {
                     log.warn(String.format("Cannot create Google Drive credential store: %s", e.getMessage()), e);
                     s.onError(e);
                 } catch (MissingAuthorizationCodeException e) {
-                    log.warn(String.format("Cannot create Google Drive credential store: %s", e.getMessage()), e);
+                    log.warn(String.format("Missing Authorization code, get one at: %s", e.url), e);
                     s.onError(e);
                 }
             }
@@ -66,10 +66,10 @@ public class GoogleDriveService {
         final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, jsonFactory, clientId, clientSecret, Arrays.asList(DriveScopes.DRIVE))
                 .setAccessType("offline")
-                .setApprovalPrompt("auto")
+                .setApprovalPrompt("force")
                 .setCredentialStore(credentialStore).build();
 
-        if (authCode == null) {
+        if (authCode == null || authCode.equals("")) {
             credentialStore.delete(CLIENT_ID, null);
 
             final String url = flow.newAuthorizationUrl().setRedirectUri(REDIRECT_URI).build();
