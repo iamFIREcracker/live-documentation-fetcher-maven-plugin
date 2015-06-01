@@ -143,6 +143,19 @@ created, and shared
 
 ## Changelog
 
+- **0.0.5**:
+
+  * Bug fixes
+
+    The url associated with `MissingAuthorizationCodeException` was never 
+    displayed to the user, consequently it was almost impossible to properly
+    configure the plugin.
+
+- **0.0.4**:
+
+  * Better log traces
+  * Set maximum delay time for retries to 5 seconds (1 second before)
+
 - **0.0.3**:
 
   * Automatic retry in case of network errors
