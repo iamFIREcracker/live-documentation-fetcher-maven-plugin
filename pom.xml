@@ -8,7 +8,7 @@
     </parent>
     <groupId>net.matteolandi</groupId>
     <artifactId>live-documentation-fetcher-maven-plugin</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <packaging>maven-plugin</packaging>
     <url>https://github.com/iamFIREcracker/live-documentation-fetcher-maven-plugin</url>
 
@@ -90,6 +90,15 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>create-jar-with-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>

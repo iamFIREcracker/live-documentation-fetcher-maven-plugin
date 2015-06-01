@@ -28,7 +28,7 @@
             <plugin>
                 <groupId>net.matteolandi</groupId>
                 <artifactId>live-documentation-fetcher-maven-plugin</artifactId>
-                <version>0.0.5</version>
+                <version>0.0.6-SNAPSHOT</version>
                 <configuration>
                     <googleDriveAuth>
                         <!-- Values are read from the imported the file auth.properties -->
@@ -45,7 +45,7 @@
                         </document>
                         <document>
                             <title>Questionario cinema</title>
-                            <outputDirectory>target/foo</outputDirectory>
+                            <!--<outputDirectory>target/foo</outputDirectory>-->
                         </document>
                         <document>
                             <title>Live Documentation</title>
