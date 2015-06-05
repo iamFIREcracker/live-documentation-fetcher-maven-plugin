@@ -45,7 +45,7 @@
                         </document>
                         <document>
                             <title>Questionario cinema</title>
-                            <!--<outputDirectory>target/foo</outputDirectory>-->
+                            <outputDirectory>target/foo</outputDirectory>
                         </document>
                         <document>
                             <title>Live Documentation</title>
