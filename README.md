@@ -143,6 +143,14 @@ created, and shared
 
 ## Changelog
 
+- **0.0.6**:
+
+  * Bug fixes
+
+    Sometimes the plugin failed while creating the destination folder; now,
+    when that happens, a `IOException` is thrown so that the engine is able
+    to try and recover.
+
 - **0.0.5**:
 
   * Bug fixes
