@@ -145,7 +145,7 @@ public class FetchMojo extends AbstractMojo {
 
                 final java.io.File actualOutputDirectory = getActualOutputDirectory(document);
                 final java.io.File destination
-                        = getDestinationFile(actualOutputDirectory, document.title, EXTENSION);
+                        = getDestinationFile(log, actualOutputDirectory, document.title, EXTENSION);
 
                 ByteStreams.copy(inputStream, new FileOutputStream(destination));
 
@@ -176,12 +176,14 @@ public class FetchMojo extends AbstractMojo {
         return (document.outputDirectory != null) ? document.outputDirectory : outputDirectory;
     }
 
-    private static java.io.File getDestinationFile(final java.io.File outputDirectory, final String title,
-                                                   final String extension) throws Exception {
+    private static java.io.File getDestinationFile(final Log log, final java.io.File outputDirectory,
+                                                   final String title, final String extension) throws Exception {
         if (!outputDirectory.exists()) {
             if (!outputDirectory.mkdir()) {
-                throw new Exception(
-                        String.format("Cannot create destination folder: '%s'", outputDirectory.getAbsolutePath()));
+                final String message =
+                            String.format("Cannot create destination folder: '%s'", outputDirectory.getAbsolutePath());
+                log.warn(message);
+                throw new IOException(message);
             }
         }
         final String name = String.format("%s%s", title, extension);
